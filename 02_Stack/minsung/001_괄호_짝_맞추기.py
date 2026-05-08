@@ -1,7 +1,3 @@
-s1 = ["(", "(", ")", ")", "(", ")"]
-s2 = ["(", "(", "(", ")", ")", "(", ")"]
-
-
 def solution(s):
     stack = []
 
@@ -18,6 +14,3 @@ def solution(s):
         return False
     else:
         return True
-
-
-print(solution(s2))

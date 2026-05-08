@@ -1,7 +1,3 @@
-decimal1 = 10
-decimal2 = 27
-decimal3 = 12345
-
 def solution(decimal):
   stack = []
   while decimal > 0:
@@ -14,5 +10,3 @@ def solution(decimal):
     binary += stack.pop()
     
   return binary
-
-print(solution(decimal3))
