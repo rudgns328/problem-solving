@@ -1,6 +1,9 @@
+from collections import defaultdict
+
+
 def solution(genres, plays):
     answer = []
-    d = {}
+    d = defaultdict(lambda: {"total": 0})
     for i, g in enumerate(genres):
         if g not in d:
             d[g] = {"total": 0}
