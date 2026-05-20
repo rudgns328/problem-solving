@@ -12,8 +12,8 @@ def solution(record):
     for cmd in record:
         c = cmd.split()
         if c[0] == "Enter":
-            result.append(names[c[1]] + "님이 들어왔습니다.")
+            result.append(f"{names[c[1]]}님이 들어왔습니다.")
         elif c[0] == "Leave":
-            result.append(names[c[1]] + "님이 나갔습니다.")
+            result.append(f"{names[c[1]]}님이 나갔습니다.")
 
     return result
