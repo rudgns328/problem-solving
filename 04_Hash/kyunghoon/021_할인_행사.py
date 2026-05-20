@@ -1,29 +1,14 @@
-from collections import deque, Counter
+from collections import Counter
 
 
 def solution(want, number, discount):
-    w = dict(zip(want, number))
-    discount = deque(discount)
-    result = 0
+    answer = 0
+    dic = {}
+    for i in range(len(want)):
+        dic[want[i]] = number[i]
 
-    d = Counter(list(discount)[0:10])
+    for i in range(len(discount) - 9):
+        if dic == Counter(discount[i : i + 10]):
+            answer += 1
 
-    while len(discount) >= 10:
-        if w.keys() <= d.keys():
-            for k in w:
-                if w[k] <= d[k]:
-                    continue
-                else:
-                    break
-            else:
-                result += 1
-
-        out = discount.popleft()
-        d[out] -= 1
-        if d[out] == 0:
-            del d[out]
-
-        if len(discount) >= 10:
-            d[discount[9]] += 1
-
-    return result
+    return answer
