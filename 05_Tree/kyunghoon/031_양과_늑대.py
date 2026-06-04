@@ -1,31 +1,30 @@
-from collections import deque
+from collections import defaultdict
 
 
 def solution(info, edges):
-    def build_tree(info, edges):
-        tree = [[] for _ in range(len(info))]
-        for edge in edges:
-            tree[edge[0]].append(edge[1])
-        return tree
+    tree = defaultdict(list)
 
-    tree = build_tree(info, edges)
-    max_sheep = 0
+    for parent, child in edges:
+        tree[parent].append(child)
 
-    q = deque([(0, 1, 0, set())])
+    def dfs(node, sheep, wolf, next_nodes):
+        if info[node] == 0:
+            sheep += 1
+        else:
+            wolf += 1
 
-    while q:
-        current, sheep_count, wolf_count, visited = q.popleft()
-        max_sheep = max(max_sheep, sheep_count)
-        visited.update(tree[current])
+        if sheep <= wolf:
+            return 0
 
-        for next_node in visited:
-            if info[next_node]:
-                if sheep_count != wolf_count + 1:
-                    q.append(
-                        (next_node, sheep_count, wolf_count + 1, visited - {next_node})
-                    )
-                else:
-                    q.append(
-                        (next_node, sheep_count + 1, wolf_count, visited - {next_node})
-                    )
-    return max_sheep
+        next_nodes = next_nodes + tree[node]
+        max_sheep = sheep
+
+        for next_node in next_nodes:
+            result = dfs(
+                next_node, sheep, wolf, [n for n in next_nodes if n != next_node]
+            )
+            max_sheep = max(max_sheep, result)
+
+        return max_sheep
+
+    return dfs(0, 0, 0, [])
