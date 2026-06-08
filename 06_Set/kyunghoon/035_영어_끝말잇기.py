@@ -1,17 +1,6 @@
 def solution(n, words):
-    answer = []
-    check = []
-    for i in range(len(words)):
-
-        if i != 0:
-            a = words[i]
-            b = words[i - 1]
-
-            if a[0] != b[-1] or a in check:
-                answer += [len(check) % n + 1, len(check) // n + 1]
-                break
-        check.append(words[i])
-    if answer:
-        return answer
+    for p in range(1, len(words)):
+        if words[p][0] != words[p - 1][-1] or words[p] in words[:p]:
+            return [(p % n) + 1, (p // n) + 1]
     else:
         return [0, 0]
