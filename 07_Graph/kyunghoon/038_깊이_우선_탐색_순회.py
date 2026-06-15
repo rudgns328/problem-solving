@@ -1,27 +1,21 @@
 from collections import defaultdict
 
+adj_list = defaultdict(list)
+visited = set()
+result = []
 
-def dfs(node, visited, current_node, answer):
-    visited[current_node] = True
-    answer.append(current_node)
-    for adj_node in node[current_node]:
-        if not visited[adj_node]:
-            dfs(node, visited, adj_node, answer)
+
+def dfs(node):
+    visited.add(node)
+    result.append(node)
+    for neighbor in adj_list[node]:
+        if neighbor not in visited:
+            dfs(neighbor)
 
 
 def solution(graph, start):
-    all_nodes = set()
-    for i in graph:
-        for j in i:
-            all_nodes.add(j)
-    visited = {k: False for k in all_nodes}
+    for u, v in graph:
+        adj_list[u].append(v)
 
-    node = defaultdict(list)
-    for k, v in graph:
-        node[k] += [v]
-
-    answer = []
-
-    dfs(node, visited, start, answer)
-
-    return answer
+    dfs(start)
+    return result
