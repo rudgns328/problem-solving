@@ -1,33 +1,30 @@
-from collections import defaultdict
+from heapq import heappop, heappush
 import math
+from collections import defaultdict
 
 def solution(start, numNodes, edges):
     graph = defaultdict(list)
     for u, v, w in edges:
         graph[u].append((v, w))
         
-    nodes = list(range(numNodes))
-    dist = {node: math.inf for node in nodes}
+    dist = [math.inf] * numNodes
     dist[start] = 0
-    prev = {node: None for node in nodes}
-    visited = []
+    visited = [False] * numNodes
     
-    while(len(visited) < numNodes):
-        current = None
-        for node in nodes:
-            if node not in visited:
-                if current is None or dist[node] < dist[current]:
-                    current = node
+    priority_queue = [(0, start)]
+    
+    while priority_queue:
+        current_dist, current_node = heappop(priority_queue)
         
-        if dist[current] == math.inf:
-            break
+        if visited[current_node] == True:
+            continue
         
-        visited.append(current)
+        visited[current_node] = True
         
-        for v, w in graph[current]:
-            new_w = dist[current] + w 
-            if new_w < dist[v]:
-                dist[v] = new_w
-                prev[v] = current
+        for neighbor, weight in graph[current_node]:
+            new_distance = current_dist + weight
+            if dist[neighbor] > new_distance:
+                dist[neighbor] = new_distance
+                heappush(priority_queue, (new_distance, neighbor))
                 
-    return list(dist.values())
+    return dist
