@@ -1,40 +1,25 @@
 def solution(n, wires):
-    visited = set()
-    answer = 100
-    count = 0
     graph = [[] for _ in range(n + 1)]
-
     for a, b in wires:
         graph[a].append(b)
         graph[b].append(a)
         
-    def cut_edge(i):
-        nonlocal answer
-        nonlocal count
-        nodes = graph[i][:]
-        for node in nodes:
-            graph[i].remove(node)
-            graph[node].remove(i)
-            cnt = dfs(i)
-            graph[i].append(node)
-            graph[node].append(i)
-            count = abs(2 * cnt - n)
-            answer = min(count, answer)
-            count = 0
-            visited.clear()
-
-    def dfs(i):
-        visited.add(i)
+    def dfs(node, visited):
+        visited[node] = True
         cnt = 1
-        for v in graph[i]:
-            if v not in visited:
-                cnt += dfs(v)
-    
+        for v in graph[node]:
+            if not visited[v]:
+                cnt += dfs(v, visited)
         return cnt
-
-    for i in range(1, n + 1):
-        cut_edge(i)
     
+    answer = n
+    for a, b in wires:
+        graph[a].remove(b)
+        graph[b].remove(a)
+        visited = [False] * (n + 1)
+        cnt = dfs(a, visited)
+        answer = min(answer, abs(2 * cnt - n))
+        graph[a].append(b)
+        graph[b].append(a)
+        
     return answer
-
-print(solution(9, [[1,3],[2,3],[3,4],[4,5],[4,6],[4,7],[7,8],[7,9]]))
