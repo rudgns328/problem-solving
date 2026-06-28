@@ -1,26 +1,9 @@
 def solution(numbers, target):
-    comb = []
-    answer = 0
-    def dfs(number, n):
-        nonlocal answer
-        comb.append(number)
-        if n == len(numbers) - 1 and sum(comb) == target:
-            answer += 1
-            comb.pop()
-            return
-        elif n == len(numbers) - 1:
-            comb.pop()
-            return
-        else:
-            n += 1
-            dfs(numbers[n], n)
-            dfs(-numbers[n], n)
-            comb.pop()
-            
-    dfs(numbers[0], 0)
-    comb = []
-    dfs(-numbers[0], 0)
+    def dfs(index, current_sum):
+        if index == len(numbers):
+            if current_sum == target:
+                return 1
+            return 0
+        return dfs(index + 1, current_sum + numbers[index]) + dfs(index + 1, current_sum - numbers[index])
     
-    return answer
-
-print(solution([4, 1, 2, 1], 4))
+    return dfs(0, 0)
