@@ -1,22 +1,14 @@
-def solution(N):
-    result = []
-    combination = []
+def backtrack(sum, selected_nums, start, N, results):
+    if sum == 10:
+        results.append(selected_nums)
+        return
+    
+    for i in range(start, N + 1):
+        if sum + i > 10:
+            break
+        backtrack(sum + i, selected_nums + [i], i + 1, N, results)
 
-    def backtrack(start, current_sum):
-        for num in range(start, N + 1):
-            new_sum = current_sum + num
-            
-            if new_sum == 10:
-                combination.append(num)
-                result.append(combination[:])
-                combination.pop()
-                break
-            elif new_sum > 10:
-                break
-            
-            combination.append(num)
-            backtrack(num + 1, new_sum)
-            combination.pop()
-            
-    backtrack(1, 0)            
-    return result
+def solution(N):
+    results = []
+    backtrack(0, [], 1, N, results)
+    return results
