@@ -1,29 +1,29 @@
 def solution(n):
-    queen = set()
+    cols = set()
+    diag1 = set()
+    diag2 = set()
     answer = 0
+    
+    def dfs(row):
+        nonlocal answer
+        if row == n:
+            answer += 1
+            return
+        
+        for col in range(n):
+            if col in cols or (row - col) in diag1 or (row + col) in diag2:
+                continue
+            
+            cols.add(col)
+            diag1.add(row - col)
+            diag2.add(row + col)
 
-    def check(row, col):
-        for r, c in queen:
-            if c == col or abs(r - row) == abs(c - col):
-                return True
-        return False
+            dfs(row + 1)
 
-    def dfs(row, col):
-        queen.add((row, col))
+            cols.remove(col)
+            diag1.remove(row - col)
+            diag2.remove(row + col)
 
-        if row == n - 1:
-            queen.remove((row, col))
-            return 1
-
-        count = 0
-        for i in range(n):
-            if not check(row + 1, i):
-                count += dfs(row + 1, i)
-
-        queen.remove((row, col))
-        return count
-
-    for i in range(n):
-        answer += dfs(0, i)
+    dfs(0)
 
     return answer
