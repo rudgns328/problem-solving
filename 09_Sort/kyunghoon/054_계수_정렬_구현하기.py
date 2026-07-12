@@ -9,5 +9,3 @@ def solution(s):
         sorted_str += chr(i + ord("a")) * count[i]
 
     return sorted_str
-
-print(solution("hello"))
