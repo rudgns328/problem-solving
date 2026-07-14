@@ -1,17 +1,15 @@
 def solution(s):
-    answer = []
-    s = s[1:-1]
-    groups = s.split("},{")
-    groups[0] = groups[0][1:]
-    groups[-1] = groups[-1][:-1]
-    new_s = [[int(x) for x in g.split(",")] for g in groups]
+    s = s[2:-2].split("},{")
+    new_s = [[int(x) for x in g.split(",")] for g in s]
     sorted_s = sorted(new_s, key=len)
+    
+    answer = []
     checked = set()
-    answer.append(sorted_s[0][0])
-    checked.add(sorted_s[0][0])
-    for i in range(1, len(sorted_s)):
-        for j in range(len(sorted_s[i])):
-            if sorted_s[i][j] not in checked:
-                answer.append(sorted_s[i][j])
-                checked.add(sorted_s[i][j])
+    
+    for group in sorted_s:
+        for num in group:
+            if num not in checked:
+                answer.append(num)
+                checked.add(num)
+
     return answer
