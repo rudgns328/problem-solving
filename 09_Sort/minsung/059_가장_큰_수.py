@@ -15,7 +15,7 @@ def solution(numbers):
     nums.sort(key=cmp_to_key(compare))
     answer = "".join(nums)
 
-    if answer == 0:
+    if answer[0] == "0":
         return "0"
 
     return answer
