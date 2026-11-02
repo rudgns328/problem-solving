@@ -2,11 +2,9 @@ from collections import Counter
 
 
 def solution(participant, completion):
-    hash = Counter(participant)
+    p = Counter(participant)
+    c = Counter(completion)
 
-    for c in completion:
-        hash[c] -= 1
-
-    for h in hash:
-        if hash[h]:
-            return h
+    for name, count in p.items():
+        if c[name] != count:
+            return name
