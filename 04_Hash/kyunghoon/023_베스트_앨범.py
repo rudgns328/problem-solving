@@ -2,26 +2,19 @@ from collections import defaultdict
 
 
 def solution(genres, plays):
-    answer = []
-    d = defaultdict(lambda: {"total": 0})
-    for i, g in enumerate(genres):
-        if g not in d:
-            d[g] = {"total": 0}
-        d[g]["total"] += plays[i]
-        d[g][i] = plays[i]
+    ans = []
+    song = defaultdict(lambda: {"total": 0, "count": {}})
 
-    sorted_genres = sorted(d, key=lambda x: d[x]["total"], reverse=True)
+    for i in range(len(genres)):
+        song[genres[i]]["count"][i] = plays[i]
 
-    for g in sorted_genres:
-        sorted_songs = sorted(
-            {k: v for k, v in d[g].items() if k != "total"}.items(),
-            key=lambda x: x[1],
-            reverse=True,
-        )
+    for s in song.values():
+        s["total"] = sum(s["count"].values())
+        s["count"] = dict(sorted(s["count"].items(), key=lambda x: x[1], reverse=True))
 
-        for idx, (song_idx, _) in enumerate(sorted_songs):
-            if idx == 2:
-                break
-            answer.append(song_idx)
+    song = dict(sorted(song.items(), key=lambda x: x[1]["total"], reverse=True))
 
-    return answer
+    for s in song.values():
+        ans.extend(list(s["count"])[:2])
+
+    return ans
