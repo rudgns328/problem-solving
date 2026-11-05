@@ -1,14 +1,12 @@
 def solution(s):
     stack = []
-    for i in s:
-        if not stack and i == ")":
+
+    for c in s:
+        if not stack and c == ")":
             return False
-        elif i == "(":
-            stack.append(i)
-        elif i == ")":
+        if c == "(":
+            stack.append(c)
+        else:
             stack.pop()
 
-    if stack:
-        return False
-    else:
-        return True
+    return len(stack) == 0
